@@ -1050,6 +1050,16 @@ The new license key should have the following format: `IMxxxxxxxxxxxxxxx`.
 
 This is it!
 
+ ### 29. IPs in the access log are defined as internal IPs?
 
+Depending on your NAT/NAPT solution or a reverse proxy it is first needed to preserve X-Headers. Also, adjust the web server configuration to be able to define real IPs from those headers. After that, it is required to add trust to those IPs with:
 
+```
+imunify360-agent remote-proxy add 127.0.0.0/8 --name "my_own_proxy"
+```
+or
+```
+imunify360-agent remote-proxy add add 10.0.0.0/24 --name "my_own_proxy"
+```
 
+So that instead of using the SRC field in the IP layer of traffic as the client’s IP address (which would cause all connections to appear to originate from the proxy), Imunify can trust these headers and find the client’s real IP.
